@@ -48,19 +48,46 @@ model_filt = model.fit(train_dataset,
                        callbacks=[callbacks])
 dir_path = 'data/test/'
 
+sez = []
 for i in os.listdir(dir_path):
+    ime = i.split("_")
+    if ime[0] == "121":
+        sez.append("Chris Bosh")
+    elif ime[0] == "534":
+        sez.append("Natalie Portman")
+    elif ime[0] == "999":
+        sez.append("Unknown")
+
+
+correct = 0
+rez = []
+for i in os.listdir(dir_path):
+   #print(i)
     img = image.load_img(dir_path+'//'+i, target_size=(200, 200))
-    plt.imshow(img)
-    plt.show()
+    #plt.imshow(img)
+    #plt.show()
 
     X = image.img_to_array(img)
     X = np.expand_dims(X, axis=0)
     images = np.vstack([X])
     classes = model.predict(images)
-    print(classes[0])
+    #print(classes[0])
+
     if classes[0] == 0:
         print("Chris Bosh")
+        rez.append("Chris Bosh")
     elif classes[0] == 1:
         print("Natalie Portman")
+        rez.append("Natalie Portman")
     else:
         print("Unknown")
+        rez.append("Unknown")
+
+ind = 0
+for im in rez:
+    if rez[ind] == sez[ind]:
+        correct = correct+1
+    ind = ind+1
+
+ratio = correct / len(sez)
+print(ratio)
